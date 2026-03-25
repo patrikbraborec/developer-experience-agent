@@ -12,11 +12,14 @@ You are a DX (Developer Experience) expert. The user has provided a new insight 
 
 ## Your task
 
-1. **Analyze the insight text** provided in `$ARGUMENTS`
-2. **Segment the feedback** if it covers multiple topics. Long messages often contain several distinct points — split them into separate, self-contained insights. Each segment should capture one actionable point.
-3. **Determine the best matching category** for each segment from the DX Framework categories below
-4. **Group segments by category** — segments going to the same category page are added together as sub-bullets under one parent bullet
-5. **Run the script once per category** to add the insight(s) to the correct Notion page
+1. **Ask about the source/reference** — Before processing, ask the user two things:
+   - **Source type**: Where this insight came from (e.g., Slack conversation, customer call, support ticket, internal meeting, GitHub issue, etc.). Use this as the parent description when adding segmented insights (e.g., "Slack conversation about Actor SDK architecture"). If the user already provided the source in their message, skip this question.
+   - **Source link**: A URL to the original source (e.g., Slack message link, GitHub issue URL, meeting notes link). Append this link at the end of the parent description in the format: `(source: <URL>)`. If the user doesn't have a link, skip it.
+2. **Analyze the insight text** provided in `$ARGUMENTS`
+3. **Segment the feedback** if it covers multiple topics. Long messages often contain several distinct points — split them into separate, self-contained insights. Each segment should capture one actionable point.
+4. **Determine the best matching category** for each segment from the DX Framework categories below
+5. **Group segments by category** — segments going to the same category page are added together as sub-bullets under one parent bullet
+6. **Run the script once per category** to add the insight(s) to the correct Notion page
 
 ## DX Framework Categories
 
@@ -68,7 +71,7 @@ python ${CLAUDE_SKILL_DIR}/scripts/add_insight.py --category "<exact category na
 
 The script automatically uses `@Today` (Notion date mention) and appends as the last item in the Insights section. This produces the following Notion structure:
 ```
-• @Today Feedback from DX workshop at the product offsite:
+• @Today Feedback from DX workshop at the product offsite (source: https://slack.com/archives/...):
     ◦ The UX of the Web IDE is not good...
     ◦ The Web IDE should behave like an actual IDE...
     ◦ Idea: Use log messages in the form of Step [i]/[n]...
